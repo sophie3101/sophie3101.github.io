@@ -27,11 +27,11 @@
 <meta property="og:url" content="http://localhost:4000/projects/nyc-citi-bike-etl/" />
 <meta property="og:site_name" content="Sophie Nguyen" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-08-26T13:33:07-05:00" />
+<meta property="article:published_time" content="2025-08-26T13:47:12-05:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Citi Bike NYC - A Data Engineering Approach" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-26T13:33:07-05:00","datePublished":"2025-08-26T13:33:07-05:00","description":"build end-to-end workflow from extract raw Citi Bike trip to process and analyze data","headline":"Citi Bike NYC - A Data Engineering Approach","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/nyc-citi-bike-etl/"},"url":"http://localhost:4000/projects/nyc-citi-bike-etl/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-26T13:47:12-05:00","datePublished":"2025-08-26T13:47:12-05:00","description":"build end-to-end workflow from extract raw Citi Bike trip to process and analyze data","headline":"Citi Bike NYC - A Data Engineering Approach","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/nyc-citi-bike-etl/"},"url":"http://localhost:4000/projects/nyc-citi-bike-etl/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -140,7 +140,39 @@
   vizElement.parentNode.insertBefore(scriptElement, vizElement);
 </script>
 
-<p>More details of the project can be found: <a href="https://github.com/sophie3101/data_projects/tree/main/03_nyc_citi_bike" target="_blank" rel="noopener noreferrer">github_link</a></p>
+<h2 id="installation--deployment">Installation &amp; Deployment</h2>
+<ol>
+  <li>
+    <p>git clone https://github.com/sophie3101/data_projects.git</p>
+  </li>
+  <li>
+    <p>cd data_projects/03_nyc_citi_bike</p>
+  </li>
+  <li>Provision infrastructure:
+    <ul>
+      <li>cd terraform</li>
+      <li>terraform init</li>
+      <li>terraform apply  -var-file=”secret.tfvars”</li>
+    </ul>
+  </li>
+  <li>Start airflow scheduler:
+    <ul>
+      <li>cd .. # back to the current directory of the project</li>
+      <li>astro dev init</li>
+      <li>astro dev start</li>
+      <li>Then start the pipeline dag</li>
+    </ul>
+  </li>
+  <li>to generate <code class="language-plaintext highlighter-rouge">citibike_facts</code>, use dbt:
+    <ul>
+      <li>cd dbt_athena</li>
+      <li>dbt_init</li>
+      <li>dbt run</li>
+    </ul>
+  </li>
+</ol>
+
+<p>📍 More details of the project can be found: <a href="https://github.com/sophie3101/data_projects/tree/main/03_nyc_citi_bike" target="_blank" rel="noopener noreferrer">github_link</a></p>
 
 
 

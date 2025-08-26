@@ -66,6 +66,27 @@ Key objectives of the project include:
   vizElement.parentNode.insertBefore(scriptElement, vizElement);
 </script>
 
-More details of the project can be found: [github_link](https://github.com/sophie3101/data_projects/tree/main/03_nyc_citi_bike)
+## Installation & Deployment
+1. git clone https://github.com/sophie3101/data_projects.git
+
+2. cd data_projects/03_nyc_citi_bike
+
+3. Provision infrastructure:
+  - cd terraform
+  - terraform init
+  - terraform apply  -var-file="secret.tfvars" 
+
+4. Start airflow scheduler:
+  - cd .. # back to the current directory of the project
+  - astro dev init
+  - astro dev start
+  - Then start the pipeline dag
+
+5. to generate `citibike_facts`, use dbt:
+  - cd dbt_athena
+  - dbt_init
+  - dbt run
+
+📍 More details of the project can be found: [github_link](https://github.com/sophie3101/data_projects/tree/main/03_nyc_citi_bike)
 
 
