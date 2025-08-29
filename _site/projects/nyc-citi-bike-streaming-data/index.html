@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <link rel="stylesheet" href="/assets/css/main.css">
+
+        <h1 class="post-headline">Sophie Nguyen</h1>
+        <h3 class="post-description">Bioinformatics Specialist & Aspiring Data Engineer</h3>
+
+        <div class="links scroll">
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+        <a href="/resume/">Resume</a>
+</div>
+
+
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>NYC Citi Bike Streaming Pipeline | Sophie Nguyen</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="NYC Citi Bike Streaming Pipeline" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Real-time data pipeline to ingest, process, and visualize NYC Citi Bike streaming data using Redpanda, Spark, PostgreSQL, and Grafana." />
+<meta property="og:description" content="Real-time data pipeline to ingest, process, and visualize NYC Citi Bike streaming data using Redpanda, Spark, PostgreSQL, and Grafana." />
+<link rel="canonical" href="http://localhost:4000/projects/nyc-citi-bike-streaming-data/" />
+<meta property="og:url" content="http://localhost:4000/projects/nyc-citi-bike-streaming-data/" />
+<meta property="og:site_name" content="Sophie Nguyen" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-08-29T16:21:37-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="NYC Citi Bike Streaming Pipeline" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-29T16:21:37-05:00","datePublished":"2025-08-29T16:21:37-05:00","description":"Real-time data pipeline to ingest, process, and visualize NYC Citi Bike streaming data using Redpanda, Spark, PostgreSQL, and Grafana.","headline":"NYC Citi Bike Streaming Pipeline","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/nyc-citi-bike-streaming-data/"},"url":"http://localhost:4000/projects/nyc-citi-bike-streaming-data/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+        <!-- insert favicons, used https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
+<link rel="shortcut icon" href="/assets/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+<link rel="manifest" href="/assets/favicon/site.webmanifest" />
+
+
+        <!-- MathJax -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     processEscapes: true
+    }
+  });
+</script>
+
+
+        <!-- Load fontawesome here for faster loadtimes: https://stackoverflow.com/a/35880730/9523246 -->
+        <script type="text/javascript"> (function() { var css = document.createElement('link'); css.href = 'https://use.fontawesome.com/releases/v6.7.2/css/all.css'; css.rel = 'stylesheet'; css.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(css); })(); </script>
+
+    </head>
+
+    <body>
+        <main>
+            <article>
+                <h1 class="post-headline">NYC Citi Bike Streaming Pipeline</h1>
+<p class="meta"><small>August 29, 2025</small></p>
+
+<p>Key objectives of the project include:</p>
+
+<ol>
+  <li>
+<strong>Redpanda</strong>: Ingest real time data from NYC Citi Bike, <a href="https://gbfs.lyft.com/gbfs/2.3/bkn/en/station_information.json" target="_blank" rel="noopener noreferrer">station information</a> and <a href="https://gbfs.lyft.com/gbfs/2.3/bkn/en/station_status.json" target="_blank" rel="noopener noreferrer">station_status</a>
+</li>
+  <li>
+<strong>Apache Spark</strong> – Stream processing engine</li>
+  <li>
+<strong>PostgreSQL</strong> – Streaming data storage</li>
+  <li>
+<strong>Grafana</strong> – Real-time dashboard visualization showing real time total docks and bikes available, and a live map of stations with availability bike number.</li>
+</ol>
+
+<h2 id="installation--deployment">Installation &amp; Deployment</h2>
+<p><strong>docker-compose.yml</strong> file to spin up services for this project can be found <a href="https://github.com/sophie3101/data_projects/blob/main/03_nyc_citi_bike_streaming/docker-compose.yml" target="_blank" rel="noopener noreferrer">here</a></p>
+
+<ol>
+  <li>
+    <p>git clone https://github.com/sophie3101/data_projects.git</p>
+  </li>
+  <li>
+    <p>cd data_projects/03_nyc_citi_bike_streaming</p>
+  </li>
+  <li>
+    <p>docker compose up –build –remove-orphans  -d</p>
+  </li>
+  <li>
+    <p>Send streaming data to <strong>Redpanda</strong>:</p>
+
+    <p>Run the following commands to produce station data into <strong>Redpanda</strong>:</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> docker exec -it python-client python src/producers/load_station_info.py
+
+ docker exec -it python-client python src/producers/load_station_status.py
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Start <strong>Spark</strong> streaming jobs to consume and load data into <strong>PostgreSQL</strong></p>
+
+    <p>Run an interactive Spark container</p>
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> docker run --rm -it  -e SPARK_MASTER="spark://spark-master:7077"  -v $PWD/src/spark:/app --network 03_nyc_citi_bike_streaming_default -p 4040:4040 docker.io/bitnami/spark /bin/bash
+</code></pre></div>    </div>
+
+    <p>Once inside the container, run the following Spark jobs:</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>
+     spark-submit \
+     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0 \
+     --master spark://spark-master:7077 \
+     --jars /app/postgresql-42.7.6.jar \
+     /app/station_info_spark.py station_info
+
+
+     spark-submit \
+     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0 \
+     --master spark://spark-master:7077 \
+     --jars /app/postgresql-42.7.6.jar \
+     /app/station_status_spark.py station_status
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Visualize live data in <strong>Grafana</strong>.</p>
+
+    <ul>
+      <li>Go to <strong>http://localhost:3000/</strong>
+</li>
+      <li>Log in with default credentials (set up in <strong>docker-compose.yml</strong> file): <strong>admin</strong> for username/ <strong>admin</strong> for password</li>
+      <li>In the Connections tab, choose <strong>postgres</strong> as connection.</li>
+      <li>Then go to Dashboards, create new Dashboard and use following SQL queries for visualizations:</li>
+    </ul>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code> WITH cte AS (
+     SELECT station_id, num_bikes_available,num_docks_available,
+     ROW_NUMBER()OVER(PARTITION BY station_id ORDER BY event_time DESC ) AS rnk
+     FROM station_status
+ )
+
+ -- total dock available
+ SELECT 
+     SUM(num_docks_available)
+ FROM cte
+ JOIN station_info 
+     ON station_info.station_id = cte.station_id 
+ WHERE cte.rnk =1
+
+ -- total bik available
+ SELECT 
+     station_info.name, 
+     station_info.longitude, 
+     station_info.latitude, 
+     cte.num_bikes_available
+ FROM cte
+ JOIN station_info 
+     ON station_info.station_id = cte.station_id 
+ WHERE cte.rnk =1
+
+ -- 
+
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><img src="/assets/screenshots/grafana.png" alt="grafana"></p>
+
+<p>📍 More details of the project can be found: <a href="https://github.com/sophie3101/data_projects/blob/main/03_nyc_citi_bike_streaming" target="_blank" rel="noopener noreferrer">github_link</a></p>
+
+
+<!-- Comments only for posts -->
+
+
+            </article>
+        </main>
+
+        <footer>
+          <p class="copy">
+            <small> © Sophie Nguyen 2025
+                    | Powered by Jekyll and
+                    <a target="_blank" href="https://github.com/jitinnair1/gradfolio/" rel="noopener noreferrer">Gradfolio</a>.
+                    Last updated on 29 August 2025
+            </small>
+          </p>
+
+        <div class="rounded-social-buttons">
+<a title="" class="social-button email" itemprop="email" href="mailto:%73%6F%70%68%69%65.%74%6E%67%75%79%65%6E.%30%31@%67%6D%61%69%6C.%63%6F%6D" target="_blank">
+<i class="far fa-envelope"></i>
+</a><a title="" class="social-button linkedin" href="https://www.linkedin.com/in/sophie-nguyen-19423986/" itemprop="sameAs" target="_blank" rel="noopener noreferrer">
+<i class="fab fa-linkedin"></i>
+</a><a title="" class="social-button github" href="https://github.com/sophie3101" itemprop="sameAs" target="_blank" rel="noopener noreferrer">
+<i class="fab fa-github"></i>
+</a><!---->
+
+
+</div>
+
+
+        </footer>
+
+        <!-- Google Analytics Tracking code -->
+<script src="https://cdn.jsdelivr.net/npm/ga-lite@1/dist/ga-lite.min.js" async></script>
+<script>
+var galite = galite || {};
+galite.UA = '';
+</script>
+
+    </body>
+
+</html>

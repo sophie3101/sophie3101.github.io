@@ -102,7 +102,9 @@ PARTITION BY event_date AS
 
 ```
 DECLARE prompt_text STRING;
-SET prompt_text="For the given message classifiy the sentiment as Positive, Neutral or Negative. The response must be only one word from the choices: 'Positive', 'Neutral', or 'Negative'. Do not include any other text, punctuation, or explanation";
+SET prompt_text="For the given message classifiy the sentiment as Positive, Neutral or Negative. 
+The response must be only one word from the choices: 'Positive', 'Neutral', or 'Negative'. 
+Do not include any other text, punctuation, or explanation";
 
 
 FOR record IN (SELECT distinct event_date 
@@ -152,5 +154,5 @@ END FOR;
  ![image3](/assets/screenshots/bigquery3.png)
 
 
-
+add data vis here
 

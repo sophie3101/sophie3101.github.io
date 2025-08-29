@@ -27,11 +27,11 @@
 <meta property="og:url" content="http://localhost:4000/projects/bigquery-github/" />
 <meta property="og:site_name" content="Sophie Nguyen" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-08-29T11:51:08-05:00" />
+<meta property="article:published_time" content="2025-08-29T16:21:37-05:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Sentiment Analysis of GitHub Comments" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-29T11:51:08-05:00","datePublished":"2025-08-29T11:51:08-05:00","description":"utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments","headline":"Sentiment Analysis of GitHub Comments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-github/"},"url":"http://localhost:4000/projects/bigquery-github/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-29T16:21:37-05:00","datePublished":"2025-08-29T16:21:37-05:00","description":"utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments","headline":"Sentiment Analysis of GitHub Comments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-github/"},"url":"http://localhost:4000/projects/bigquery-github/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -191,7 +191,9 @@ PARTITION BY event_date AS
 </ul>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DECLARE prompt_text STRING;
-SET prompt_text="For the given message classifiy the sentiment as Positive, Neutral or Negative. The response must be only one word from the choices: 'Positive', 'Neutral', or 'Negative'. Do not include any other text, punctuation, or explanation";
+SET prompt_text="For the given message classifiy the sentiment as Positive, Neutral or Negative. 
+The response must be only one word from the choices: 'Positive', 'Neutral', or 'Negative'. 
+Do not include any other text, punctuation, or explanation";
 
 
 FOR record IN (SELECT distinct event_date 
@@ -239,6 +241,8 @@ END FOR;
 <h4 id="example-output-elaborate-truth-sentiment_analysissentiment_anlysis_partitioned-table">Example output (<code class="language-plaintext highlighter-rouge">elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned</code> table)</h4>
 
 <p><img src="/assets/screenshots/bigquery3.png" alt="image3"></p>
+
+<p>add data vis here</p>
 
 
 
