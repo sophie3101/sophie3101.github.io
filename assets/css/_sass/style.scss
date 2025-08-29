@@ -42,6 +42,18 @@ a {
   }
 }
 
+li a {
+  color: $link-text-color;
+  text-decoration: none;
+  &:hover{
+    color: $text-color;
+
+    @media (prefers-color-scheme: dark) {
+      color: $text-color-dark;
+    }
+
+  }
+}
 
 
 p a {

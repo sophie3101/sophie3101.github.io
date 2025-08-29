@@ -10,3 +10,6 @@ my-website/
 ├── assets/              # Images, CSS, JS
 ├── index.md             # Home page content
 └── about.md             # Sample page
+
+to test locally:
+`bundle exec jekyll serve --livereload`
