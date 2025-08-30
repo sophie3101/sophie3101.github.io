@@ -27,11 +27,11 @@
 <meta property="og:url" content="http://localhost:4000/projects/bigquery-github/" />
 <meta property="og:site_name" content="Sophie Nguyen" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-08-29T16:21:37-05:00" />
+<meta property="article:published_time" content="2025-08-30T08:18:16-05:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Sentiment Analysis of GitHub Comments" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-29T16:21:37-05:00","datePublished":"2025-08-29T16:21:37-05:00","description":"utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments","headline":"Sentiment Analysis of GitHub Comments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-github/"},"url":"http://localhost:4000/projects/bigquery-github/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-08-30T08:18:16-05:00","datePublished":"2025-08-30T08:18:16-05:00","description":"utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments","headline":"Sentiment Analysis of GitHub Comments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-github/"},"url":"http://localhost:4000/projects/bigquery-github/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -65,7 +65,7 @@
         <main>
             <article>
                 <h1 class="post-headline">Sentiment Analysis of GitHub Comments</h1>
-<p class="meta"><small>August 29, 2025</small></p>
+<p class="meta"><small>August 30, 2025</small></p>
 
 <p>This project leverages Vertex AI to perform sentiment analysis on GitHub comment events using the public <a href="https://www.gharchive.org/" target="_blank" rel="noopener noreferrer">GitHub Archive dataset</a>
 . Comment data is extracted from the dataset and analyzed with Vertex AI’s natural language processing capabilities to assess developer sentiment.</p>
@@ -242,8 +242,15 @@ END FOR;
 
 <p><img src="/assets/screenshots/bigquery3.png" alt="image3"></p>
 
-<p>add data vis here</p>
+<h4 id="analysis">Analysis</h4>
 
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT type, 
+        ml_generate_text_llm_result,
+        COUNT(*)
+FROM `elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned` 
+WHERE ml_generate_text_llm_result IS NOT NULL
+GROUP BY type, ml_generate_text_llm_result
+</code></pre></div></div>
 
 
 <!-- Comments only for posts -->
@@ -257,7 +264,7 @@ END FOR;
             <small> © Sophie Nguyen 2025
                     | Powered by Jekyll and
                     <a target="_blank" href="https://github.com/jitinnair1/gradfolio/" rel="noopener noreferrer">Gradfolio</a>.
-                    Last updated on 29 August 2025
+                    Last updated on 30 August 2025
             </small>
           </p>
 

@@ -153,6 +153,13 @@ END FOR;
 
  ![image3](/assets/screenshots/bigquery3.png)
 
+#### Analysis
 
-add data vis here
-
+```
+SELECT type, 
+        ml_generate_text_llm_result,
+        COUNT(*)
+FROM `elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned` 
+WHERE ml_generate_text_llm_result IS NOT NULL
+GROUP BY type, ml_generate_text_llm_result
+```
