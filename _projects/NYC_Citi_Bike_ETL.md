@@ -2,6 +2,7 @@
 layout: post
 title: Citi Bike NYC - A Data Engineering Approach
 description: build end-to-end workflow from extract raw Citi Bike trip to process and analyze data
+topic: data_engineering
 ---
 
 Key objectives of the project include:

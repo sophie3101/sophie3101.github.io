@@ -27,11 +27,11 @@
 <meta property="og:url" content="http://localhost:4000/projects/bigquery-github/" />
 <meta property="og:site_name" content="Sophie Nguyen" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2025-09-03T12:50:34-05:00" />
+<meta property="article:published_time" content="2025-09-04T15:38:53-05:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Sentiment Analysis of GitHub Comments" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-09-03T12:50:34-05:00","datePublished":"2025-09-03T12:50:34-05:00","description":"utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments","headline":"Sentiment Analysis of GitHub Comments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-github/"},"url":"http://localhost:4000/projects/bigquery-github/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-09-04T15:38:53-05:00","datePublished":"2025-09-04T15:38:53-05:00","description":"utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments","headline":"Sentiment Analysis of GitHub Comments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-github/"},"url":"http://localhost:4000/projects/bigquery-github/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -65,7 +65,7 @@
         <main>
             <article>
                 <h1 class="post-headline">Sentiment Analysis of GitHub Comments</h1>
-<p class="meta"><small>September 03, 2025</small></p>
+<p class="meta"><small>September 04, 2025</small></p>
 
 <p>This project leverages <strong>Vertex AI</strong> to perform sentiment analysis on GitHub comment events using the public <a href="https://www.gharchive.org/" target="_blank" rel="noopener noreferrer">GitHub Archive dataset</a>
 . Comment data is extracted from the dataset and analyzed with Vertex AI’s natural language processing capabilities to assess developer sentiment.</p>
@@ -117,17 +117,34 @@
 </li>
   <li>The <strong>Grant access your project name</strong> dialog open, in <strong>New principals</strong> field, enter <strong>Service account id</strong> for connection you created in step 2</li>
   <li>In <strong>Assign roles</strong> section, select:
-    - Storage Object Viewer.
-    - Vertex AI user</li>
+    <ul>
+      <li>Storage Object Viewer</li>
+      <li>Vertex AI user</li>
+    </ul>
+  </li>
   <li>Hit <strong>Save</strong>
+</li>
+  <li>The IAM page would look like this, with the new created connection as added principal.
+<img src="/assets/screenshots/iam.png" alt="iam_demo_image">
 </li>
 </ul>
 
-<p>More information about the set upcan be found <a href="https://cloud.google.com/bigquery/docs/create-cloud-resource-connection" target="_blank" rel="noopener noreferrer">here</a></p>
+<h4 id="4-create-dataset">4. Create dataset</h4>
+<ul>
+  <li>Go to Bigquery page. In the <strong>Explorer</strong> pane, click your project name.</li>
+  <li>
+    <p>Click more (verticle three dots)  &gt; Create dataset
+<img src="/assets/screenshots/bigquery4.png" alt="create_dataset"></p>
+  </li>
+  <li>On the Create dataset page, enter the name for dataset. Choose <code class="language-plaintext highlighter-rouge">US (multiple regions in United States)</code> in <code class="language-plaintext highlighter-rouge">Multi-region</code> for <strong>Location type</strong>. 
+Leave the remaining default settings as they are, and click <strong>Create dataset</strong>.</li>
+</ul>
 
-<h4 id="4-begin-to-do-query">4. Begin to do query</h4>
+<p>More information about the set up can be found <a href="https://cloud.google.com/bigquery/docs/create-cloud-resource-connection" target="_blank" rel="noopener noreferrer">here</a></p>
 
-<h5 id="a-create-a-remote-model-in-bigquery-that-utilizes-a-vertex-ai-foundation-model">A. Create a remote model in BigQuery that utilizes a Vertex AI foundation model.</h5>
+<h2 id="begin-to-do-query">Begin to do query</h2>
+
+<h3 id="a-create-a-remote-model-in-bigquery-that-utilizes-a-vertex-ai-foundation-model">A. Create a remote model in BigQuery that utilizes a Vertex AI foundation model.</h3>
 
 <p>Syntax</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE OR REPLACE MODEL
@@ -146,7 +163,7 @@ REMOTE WITH CONNECTION `projects/elaborate-truth-****/locations/us/connections/b
 OPTIONS (endpoint = 'gemini-2.0-flash-lite-001');
 </code></pre></div></div>
 
-<h5 id="b-extract-message-from-github-issue-and-commit-events-for-august-2025">B. Extract message from github issue and commit events, for August 2025</h5>
+<h3 id="b-extract-message-from-github-issue-and-commit-events-for-august-2025">B. Extract message from github issue and commit events, for August 2025</h3>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE OR REPLACE TABLE `elaborate-truth-****.sentiment_analysis.comment_partitioned` 
 PARTITION BY event_date AS
 (
@@ -161,7 +178,7 @@ PARTITION BY event_date AS
 );
 </code></pre></div></div>
 
-<h5 id="c-for-each-day-of-august-2025-perform-sentiment-analysis-using-for-loop">C. For each day of August 2025, perform sentiment analysis using for loop</h5>
+<h3 id="c-for-each-day-of-august-2025-perform-sentiment-analysis-using-for-loop">C. For each day of August 2025, perform sentiment analysis using for loop</h3>
 <ul>
   <li>create result table first</li>
 </ul>
@@ -230,11 +247,11 @@ SELECT 'Finished processing sentiment analysis for ' || CAST(record.event_date A
 END FOR;
 </code></pre></div></div>
 
-<h5 id="example-output-elaborate-truth-sentiment_analysissentiment_anlysis_partitioned-table">Example output (<code class="language-plaintext highlighter-rouge">elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned</code> table)</h5>
+<h4 id="example-output-elaborate-truth-sentiment_analysissentiment_anlysis_partitioned-table">Example output (<code class="language-plaintext highlighter-rouge">elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned</code> table)</h4>
 
 <p><img src="/assets/screenshots/bigquery3.png" alt="image3"></p>
 
-<h5 id="analysis">Analysis</h5>
+<h3 id="analysis">Analysis</h3>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SELECT type, 
         ml_generate_text_llm_result,
@@ -256,7 +273,7 @@ GROUP BY type, ml_generate_text_llm_result
             <small> © Sophie Nguyen 2025
                     | Powered by Jekyll and
                     <a target="_blank" href="https://github.com/jitinnair1/gradfolio/" rel="noopener noreferrer">Gradfolio</a>.
-                    Last updated on 03 September 2025
+                    Last updated on 04 September 2025
             </small>
           </p>
 

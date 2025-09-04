@@ -56,6 +56,7 @@ include:
 exclude:
   - README.md
   - LICENSE.md
+  - archive
 
 plugins:
   - jekyll-seo-tag

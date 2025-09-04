@@ -2,6 +2,7 @@
 layout: post
 title: Sentiment Analysis of GitHub Comments
 description: utilizingz Google BigQuery and the GitHub Archive dataset to perform sentiment analysis on GitHub comments
+topic: bigquery
 ---
 This project leverages **Vertex AI** to perform sentiment analysis on GitHub comment events using the public [GitHub Archive dataset](https://www.gharchive.org/)
 . Comment data is extracted from the dataset and analyzed with Vertex AI’s natural language processing capabilities to assess developer sentiment.
@@ -39,15 +40,27 @@ This project leverages **Vertex AI** to perform sentiment analysis on GitHub com
   - Select your current project, click **Grant access**
   - The **Grant access your project name** dialog open, in **New principals** field, enter **Service account id** for connection you created in step 2
   - In **Assign roles** section, select:
-        - Storage Object Viewer.
-        - Vertex AI user
+      - Storage Object Viewer
+      - Vertex AI user
   - Hit **Save**
+  - The IAM page would look like this, with the new created connection as added principal.
+    ![iam_demo_image](/assets/screenshots/iam.png)
 
-  More information about the set upcan be found [here](https://cloud.google.com/bigquery/docs/create-cloud-resource-connection)
+#### 4. Create dataset 
+  - Go to Bigquery page. In the **Explorer** pane, click your project name.
+  - Click more (verticle three dots)  > Create dataset
+    ![create_dataset](/assets/screenshots/bigquery4.png)
 
-#### 4. Begin to do query
+  - On the Create dataset page, enter the name for dataset. Choose `US (multiple regions in United States)` in `Multi-region` for **Location type**. 
+Leave the remaining default settings as they are, and click **Create dataset**.
 
-##### A. Create a remote model in BigQuery that utilizes a Vertex AI foundation model.
+  More information about the set up can be found [here](https://cloud.google.com/bigquery/docs/create-cloud-resource-connection)
+
+
+
+## Begin to do query
+
+### A. Create a remote model in BigQuery that utilizes a Vertex AI foundation model.
 
 Syntax 
 ```
@@ -69,7 +82,7 @@ OPTIONS (endpoint = 'gemini-2.0-flash-lite-001');
 ```
 
 
-##### B. Extract message from github issue and commit events, for August 2025
+### B. Extract message from github issue and commit events, for August 2025
 ```
 CREATE OR REPLACE TABLE `elaborate-truth-****.sentiment_analysis.comment_partitioned` 
 PARTITION BY event_date AS
@@ -85,7 +98,7 @@ PARTITION BY event_date AS
 );
 ```
 
-##### C. For each day of August 2025, perform sentiment analysis using for loop
+### C. For each day of August 2025, perform sentiment analysis using for loop
 - create result table first
 
 ```
@@ -152,11 +165,11 @@ SELECT 'Finished processing sentiment analysis for ' || CAST(record.event_date A
 END FOR;
 ```
 
-##### Example output (`elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned` table)
+#### Example output (`elaborate-truth-****.sentiment_analysis.sentiment_anlysis_partitioned` table)
 
  ![image3](/assets/screenshots/bigquery3.png)
 
-##### Analysis
+### Analysis
 
 ```
 SELECT type, 

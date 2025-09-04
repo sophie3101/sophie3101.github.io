@@ -1,5 +1,11 @@
 # sophie3101.github.io
-Jekyll has a set of special folder names that it recognizes automatically:
+
+This repository is used to build a personal website using Jekyll
+
+Jekyll Folder Structure Overview:
+
+Jekyll recognizes specific folder and file names as part of its default structure: 
+```
 my-website/
 ├── _config.yml          # Site settings
 ├── _posts/              # Blog posts (Markdown files)
@@ -10,6 +16,8 @@ my-website/
 ├── assets/              # Images, CSS, JS
 ├── index.md             # Home page content
 └── about.md             # Sample page
+```
 
-to test locally:
+To preview the site locally with live reloading:
+
 `bundle exec jekyll serve --livereload`

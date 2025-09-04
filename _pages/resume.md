@@ -1,5 +1,5 @@
 ---
-layout: default      
+layout: post
 title: 
 permalink: /resume/      
 ---
@@ -10,8 +10,8 @@ permalink: /resume/
 # Sophie Nguyen
 <!-- ## Software Engineer -->
 
-**Email:** sophie.tnguyen.01@gmail.com | **Phone:** (940) 273-0910
-**Location:** Houston, TX | **LinkedIn:** [linkedin.com/in/sophie-nguyen-19423986](https://www.linkedin.com/in/sophie-nguyen-19423986/)
+**Email:** [sophie.tnguyen.01](mailto:sophie.tnguyen.01@gmail.com) | **Phone:** (940) 273-0910
+**Location:** Houston, TX | **LinkedIn:** [sophie-nguyen-19423986](https://www.linkedin.com/in/sophie-nguyen-19423986/)
 
 ---
 
@@ -31,7 +31,7 @@ Bioinformatics professional with hands-on experience in software development, da
 ### Senior Scientific Programmer
 **Baylor College of Medicine, Human Genome Sequencing Center** | *April 2023 - June 2025*
 - Fine-tuned a deep learning variant calling model by augmenting training data from public genomic datasets, achieving a 40% improvement in detecting low-frequency variants.
-- Analyzed AWS Cost \& Usage Reports to monitor spending, ensure budget compliance, and identify cost anomalies, resulting in $2,000 monthly cloud savings and improved resource allocation efficiency.
+- Analyzed AWS Cost & Usage Reports to monitor spending, ensure budget compliance, and identify cost anomalies, resulting in $2,000 monthly cloud savings and improved resource allocation efficiency.
 - Engineered Dockerized applications and integrated them into serverless workflows, optimizing scalable genomic infrastructure for high-throughput data ingestion, quality control, and variant reporting. 
 - Used AWS Inspector to assess container security and unintended network exposure, reducing high-risk vulnerabilities by over 90% per monthly cycle and strengthening application security and compliance.
 - Benchmarked bioinformatics tools and validated clinical genomic assays to ensure SOP compliance and CAP/CLIA standards. Documented findings and communicated key insights to stakeholders.

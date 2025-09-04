@@ -13,4 +13,9 @@ footer {
 .copy {
     color: #aaa;
     text-align: center;
+
+    a{
+        color: inherit; /* Inherit the color from the parent element */
+     
+    }
 }

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <link rel="stylesheet" href="/assets/css/main.css">
+
+        <h1 class="post-headline">Sophie Nguyen</h1>
+        <h3 class="post-description">Bioinformatics Specialist & Aspiring Data Engineer</h3>
+
+        <div class="links scroll">
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+        <a href="/resume/">Resume</a>
+</div>
+
+
+        <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>StackOverflow Retrieval with BigQuery and RAG | Sophie Nguyen</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="StackOverflow Retrieval with BigQuery and RAG" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Building a Semantic Search and Retrieval System for StackOverflow Questions and Answers Using BigQuery, Embeddings, and RAG" />
+<meta property="og:description" content="Building a Semantic Search and Retrieval System for StackOverflow Questions and Answers Using BigQuery, Embeddings, and RAG" />
+<link rel="canonical" href="http://localhost:4000/projects/bigquery-stackoverflow/" />
+<meta property="og:url" content="http://localhost:4000/projects/bigquery-stackoverflow/" />
+<meta property="og:site_name" content="Sophie Nguyen" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-09-04T15:38:53-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="StackOverflow Retrieval with BigQuery and RAG" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-09-04T15:38:53-05:00","datePublished":"2025-09-04T15:38:53-05:00","description":"Building a Semantic Search and Retrieval System for StackOverflow Questions and Answers Using BigQuery, Embeddings, and RAG","headline":"StackOverflow Retrieval with BigQuery and RAG","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/projects/bigquery-stackoverflow/"},"url":"http://localhost:4000/projects/bigquery-stackoverflow/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+        <!-- insert favicons, used https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/favicon/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon.svg" />
+<link rel="shortcut icon" href="/assets/favicon/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png" />
+<link rel="manifest" href="/assets/favicon/site.webmanifest" />
+
+
+        <!-- MathJax -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     processEscapes: true
+    }
+  });
+</script>
+
+
+        <!-- Load fontawesome here for faster loadtimes: https://stackoverflow.com/a/35880730/9523246 -->
+        <script type="text/javascript"> (function() { var css = document.createElement('link'); css.href = 'https://use.fontawesome.com/releases/v6.7.2/css/all.css'; css.rel = 'stylesheet'; css.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(css); })(); </script>
+
+    </head>
+
+    <body>
+        <main>
+            <article>
+                <h1 class="post-headline">StackOverflow Retrieval with BigQuery and RAG</h1>
+<p class="meta"><small>September 04, 2025</small></p>
+
+<p>StackOverflow Retrieval with BigQuery and RAG is a solution designed to accelerate and automate the process of finding relevant answers from StackOverflow. Traditional methods involve manually browsing multiple questions, comparing content, and verifying answers. This process is tedious, time-consuming and delays producitvity.</p>
+
+<p>The goal of this project is to streamline this experice using retrival-based AI approach with no latency. This project leverages Google BigQuery for public data access,  embeddings for semantic encoding of questions, vector search to find similar questions, and Retrieval-Augmented Generation (RAG) to generate accurate, context-aware answers.</p>
+
+<h2 id="bigquery-approach">BigQuery approach</h2>
+
+<p>This project follows a Retrieval-Augmented Generation (RAG) pipeline: 
+ <img src="/assets/screenshots/rag_architecture.png" alt="rag_architecture">“image from <a href="https://cloud.google.com/blog/products/data-analytics/introducing-new-vector-search-capabilities-in-bigquery" target="_blank" rel="noopener noreferrer">google</a>”</p>
+
+<ul>
+  <li>Questions from StackOverflow are broken into chunk of smaller text segments. Each chunk is converted into a vector embedding using <strong>ML.GENERATE_EMBEDDING</strong>, capturing the semantic meaning of the text.</li>
+  <li>The generated embeddings are stored in a vector index, optimized for fast similarity search using <strong>VECTOR_INDEX</strong>.</li>
+  <li>When a user submits a question, the question content is also transformed into an embedding vector using the same embedding model.</li>
+  <li>A vector similarity search is performed using <strong>VECTOR_SEARCH</strong> to compare the query embedding against the indexed  embeddings.The system ranks the most relevant StackOverflow chunks based on similarity scores and top-matching results are selected to form a context window for the <strong>LLM</strong> language model.</li>
+  <li>An LLM uses the retrieved context to generate a response that is directly grounded in real StackOverflow discussions.</li>
+</ul>
+
+<h2 id="instruction-to-set-up">Instruction to set up</h2>
+<p>The same as in instruction to set up for <strong>Sentiment Analysis of GitHub Comments</strong> project <a href="/projects/bigquery-github#instruction-to-set-up"> go to here</a></p>
+
+<h2 id="steps">Steps</h2>
+
+<h3 id="1-create-remote-model">1. Create remote model</h3>
+<ul>
+  <li>My project name is <code class="language-plaintext highlighter-rouge">certain-voyager-470919-p7</code>
+</li>
+  <li>My dataset is <code class="language-plaintext highlighter-rouge">mydataset</code>
+</li>
+  <li>Embedding model name is <code class="language-plaintext highlighter-rouge">embedding_model</code>
+</li>
+  <li>LLM model name is <code class="language-plaintext highlighter-rouge">text_generation_model</code>
+</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE OR REPLACE MODEL `certain-voyager-470919-p7.mydataset.embedding_model`
+REMOTE WITH CONNECTION  `projects/certain-voyager-470919-p7/locations/us/connections/vertexAI_connection`
+OPTIONS (ENDPOINT = 'text-embedding-005');
+
+CREATE OR REPLACE MODEL `certain-voyager-470919-p7.mydataset.text_generation_model`
+REMOTE WITH CONNECTION  `projects/certain-voyager-470919-p7/locations/us/connections/vertexAI_connection`
+OPTIONS (ENDPOINT = 'gemini-2.0-flash-001');
+</code></pre></div></div>
+
+<h3 id="1-generate-vector-representations-of-questions-using-embeddings">1. Generate Vector Representations of Questions Using Embeddings</h3>
+
+<ul>
+  <li>create a table of Stack Overflow questions, including a column to store the embedding values for each question.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE TABLE `certain-voyager-470919-p7.mydataset.embedding_questions` (
+  embedding ARRAY&lt;FLOAT64&gt;,
+  id INTEGER,
+  content STRING,
+  title STRING, 
+  body STRING, 
+  tags STRING, 
+  accepted_answer_id INTEGER
+);
+</code></pre></div></div>
+
+<ul>
+  <li>insert embedding values into the table using <strong>ML.GENERATE_EMBEDDING</strong>
+</li>
+  <li>
+<strong>NOTE</strong> For this demo, generate embeddings only for questions related to the Python topic.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INSERT INTO `certain-voyager-470919-p7.mydataset.embedding_questions` 
+(id,embedding, content, title, body, tags, accepted_answer_id )
+SELECT id,ml_generate_embedding_result AS embedding, content, title, body, tags, accepted_answer_id
+  FROM ML.GENERATE_EMBEDDING(
+    MODEL  `certain-voyager-470919-p7.mydataset.embedding_model`,
+    (SELECT id,  title, body, tags, accepted_answer_id , CONCAT(title, '\n', body, ' ', tags) AS content
+    FROM `bigquery-public-data.stackoverflow.posts_questions`
+    WHERE REGEXP_CONTAINS(tags, 'python') AND accepted_answer_id IS NOT NULL 
+    ),
+    STRUCT(TRUE AS flatten_json_output,
+          'RETRIEVAL_DOCUMENT' as task_type)
+  ) AS e
+WHERE e.id NOT IN (SELECT id FROM `certain-voyager-470919-p7.mydataset.embedding_questions` );
+</code></pre></div></div>
+
+<h3 id="3-use-a-vector-index-to-enable-efficient-similarity-search-on-the-embedding-column">3. Use a vector index to enable efficient similarity search on the embedding column</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE OR REPLACE VECTOR INDEX `question_index`
+ON `certain-voyager-470919-p7.mydataset.embedding_questions`(embedding)
+OPTIONS(distance_type='COSINE', index_type='IVF');
+</code></pre></div></div>
+
+<h3 id="4-search-for-similar-questions-using-vector-search--rag">4. Search for Similar Questions Using Vector Search + RAG</h3>
+<ul>
+  <li>Use <strong>VECTOR_SEARCH</strong> to retrievesimilar questions, join them with accepted answers from the BigQuery dataset.</li>
+  <li>Create pairs of (Question, Answer) as context for generative model (LLM model)</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DECLARE prompt, input_question STRING;
+SET input_question = "what is different between list and tuple";
+SET prompt = CONCAT("Propose a solution to the question '", input_question, "' using the question and answers from the database");
+
+SELECT input_question, ml_generate_text_llm_result AS solution, 
+FROM ML.GENERATE_TEXT(
+  MODEL `certain-voyager-470919-p7.mydataset.text_generation_model`,
+  (
+  SELECT 
+      CONCAT(prompt, STRING_AGG(FORMAT("question: %s, %s, answer: %s", base.title, base.body, a.body ))) AS prompt
+  FROM VECTOR_SEARCH(
+    TABLE `certain-voyager-470919-p7.mydataset.embedding_questions`,
+    'embedding',
+    (SELECT ml_generate_embedding_result,content
+    FROM ML.GENERATE_EMBEDDING(
+      MODEL  `certain-voyager-470919-p7.mydataset.embedding_model`,
+      (SELECT input_question AS content ),
+      STRUCT()
+    )),
+    top_k =&gt; 5,
+    distance_type =&gt; 'COSINE',
+    options =&gt; '{"fraction_lists_to_search": 0.005}'
+  ) AS q
+  JOIN  `bigquery-public-data.stackoverflow.posts_answers` a 
+  ON a.parent_id = q.base.id
+  ),
+  STRUCT(600 AS max_output_tokens, TRUE AS flatten_json_output)
+);
+</code></pre></div></div>
+
+<h4 id="example-output">Example output</h4>
+
+<p>The solution I got from the question <code class="language-plaintext highlighter-rouge">how to convert tuple to list</code> is:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">tuple_to_list</span><span class="p">(</span><span class="n">input_tuple</span><span class="p">):</span>
+  <span class="sh">"""</span><span class="s">
+  Converts a tuple to a list.
+
+  Args:
+    input_tuple: The tuple to convert.
+
+  Returns:
+    A list containing the elements of the tuple.
+  </span><span class="sh">"""</span>
+  <span class="k">return</span> <span class="nf">list</span><span class="p">(</span><span class="n">input_tuple</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+<!-- Comments only for posts -->
+
+
+            </article>
+        </main>
+
+        <footer>
+          <p class="copy">
+            <small> © Sophie Nguyen 2025
+                    | Powered by Jekyll and
+                    <a target="_blank" href="https://github.com/jitinnair1/gradfolio/" rel="noopener noreferrer">Gradfolio</a>.
+                    Last updated on 04 September 2025
+            </small>
+          </p>
+
+        <div class="rounded-social-buttons">
+<a title="" class="social-button email" itemprop="email" href="mailto:%73%6F%70%68%69%65.%74%6E%67%75%79%65%6E.%30%31@%67%6D%61%69%6C.%63%6F%6D" target="_blank">
+<i class="far fa-envelope"></i>
+</a><a title="" class="social-button linkedin" href="https://www.linkedin.com/in/sophie-nguyen-19423986/" itemprop="sameAs" target="_blank" rel="noopener noreferrer">
+<i class="fab fa-linkedin"></i>
+</a><a title="" class="social-button github" href="https://github.com/sophie3101" itemprop="sameAs" target="_blank" rel="noopener noreferrer">
+<i class="fab fa-github"></i>
+</a><!---->
+
+
+</div>
+
+
+        </footer>
+
+        <!-- Google Analytics Tracking code -->
+<script src="https://cdn.jsdelivr.net/npm/ga-lite@1/dist/ga-lite.min.js" async></script>
+<script>
+var galite = galite || {};
+galite.UA = '';
+</script>
+
+    </body>
+
+</html>

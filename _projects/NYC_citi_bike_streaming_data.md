@@ -2,6 +2,7 @@
 layout: post
 title: NYC Citi Bike Streaming Pipeline
 description: Real-time data pipeline to ingest, process, and visualize NYC Citi Bike streaming data using Redpanda, Spark, PostgreSQL, and Grafana.
+topic: data_engineering
 ---
 Key objectives of the project include:
 
