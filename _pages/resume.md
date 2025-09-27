@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 
-permalink: /resume/      
+title:
+permalink: /resume/  
 ---
 <!-- <object data="{{ site.baseurl }}/assets/doc/Sophie_Nguyen_resume.pdf#navpanes=0" type="application/pdf" width="100%" height="800px">
   <p>Download it <a href="{{ site.baseurl }}/assets/doc/Sophie_Nguyen_resume.pdf">here</a>.</p>
@@ -27,12 +27,14 @@ Bioinformatics professional with hands-on experience in software development, da
 ---
 
 ## Experience
+### Cloud Engineer
+**Baylor College of Medicine, Human Genome Sequencing Center** | *Sep 2025 - Current*
 
 ### Senior Scientific Programmer
 **Baylor College of Medicine, Human Genome Sequencing Center** | *April 2023 - June 2025*
 - Fine-tuned a deep learning variant calling model by augmenting training data from public genomic datasets, achieving a 40% improvement in detecting low-frequency variants.
 - Analyzed AWS Cost & Usage Reports to monitor spending, ensure budget compliance, and identify cost anomalies, resulting in $2,000 monthly cloud savings and improved resource allocation efficiency.
-- Engineered Dockerized applications and integrated them into serverless workflows, optimizing scalable genomic infrastructure for high-throughput data ingestion, quality control, and variant reporting. 
+- Engineered Dockerized applications and integrated them into serverless workflows, optimizing scalable genomic infrastructure for high-throughput data ingestion, quality control, and variant reporting.
 - Used AWS Inspector to assess container security and unintended network exposure, reducing high-risk vulnerabilities by over 90% per monthly cycle and strengthening application security and compliance.
 - Benchmarked bioinformatics tools and validated clinical genomic assays to ensure SOP compliance and CAP/CLIA standards. Documented findings and communicated key insights to stakeholders.
 - Supported research initiatives through bioinformatics analysis by leveraging statistical methods to extract key insights and deliver actionable reports that informed critical research decisions.
